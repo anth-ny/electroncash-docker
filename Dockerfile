@@ -33,7 +33,8 @@ FROM ubuntu:16.04
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install python3-pyqt5
 
-COPY --from=binary /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/lib/python3.5/dist-packages /usr/local/bin/
+COPY --from=binary /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
+COPY --from=binary /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 
 RUN groupadd -g 1000 -r user && useradd -u 1000 --create-home --no-log-init -r -g user user
 USER user
