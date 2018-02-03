@@ -8,5 +8,6 @@ sudo docker run \
 	-v $HOME/ec-backup/:/home/user/ec-backup/ \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-e DISPLAY \
+	--init \
 	--name ec \
 	ec
