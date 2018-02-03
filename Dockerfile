@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as tarball
+FROM ubuntu:16.04 as staging
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
 RUN curl -o /tmp/ElectronCash-3.1.2.tar.gz https://electroncash.org/downloads/3.1.2/win-linux/ElectronCash-3.1.2.tar.gz
@@ -12,7 +12,7 @@ RUN gpg --verify /tmp/ElectronCash-3.1.2.tar.gz.sig /tmp/ElectronCash-3.1.2.tar.
 #RUN apt-get update
 RUN apt-get -y install python3-pyqt5
 
-COPY --from=tarball /tmp/ElectronCash-3.1.2.tar.gz /tmp/
+#COPY --from=tarball /tmp/ElectronCash-3.1.2.tar.gz /tmp/
 
 RUN apt-get install -y --no-install-recommends python3-pip python3-setuptools
 
@@ -29,8 +29,8 @@ FROM ubuntu:16.04
 
 RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5
 
-COPY --from=binary /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
-COPY --from=binary /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
+COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
+COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 
 RUN groupadd -g 1000 -r user && useradd -u 1000 --create-home --no-log-init -r -g user user
 USER user
