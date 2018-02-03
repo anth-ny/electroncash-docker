@@ -27,12 +27,13 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5
+RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus
 
 COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
 COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 
 RUN groupadd -g 1000 -r user && useradd -u 1000 --create-home --no-log-init -r -g user user
+RUN chown root:user /etc/machine-id && chmod 775 /etc/machine-id
 USER user
 RUN mkdir /tmp/runtime-user && chmod 700 /tmp/runtime-user
 COPY electron-cash.sh /home/user/
