@@ -25,13 +25,14 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 #/usr/share/applications/electron-cash.desktop
 #/usr/share/pixmaps/electron-cash.png
 
-COPY electron-cash.sh /home/user/
-RUN tar czvf /tmp/staging.tar.gz /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/lib/python3.5/dist-packages /home/user/electron-cash.sh
+#RUN tar czvf /tmp/staging.tar.gz /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/lib/python3.5/dist-packages
 
 FROM ubuntu:16.04
 
-COPY --from=staging /tmp/staging.tar.gz /tmp/staging.tar.gz
-RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus && groupadd -g 1000 -r user && useradd -u 1000 --create-home --no-log-init -r -g user user && chown root:user /etc/machine-id && chmod 775 /etc/machine-id && mkdir /tmp/runtime-user && chown user:user /tmp/runtime-user && chmod 700 /tmp/runtime-user && tar xvf /tmp/staging.tar.gz -C / && rm /tmp/staging.tar.gz && chown user:user /home/user/electron-cash.sh
+COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
+COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
+RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus
+#&& tar xvf /tmp/staging.tar.gz -C / && rm /tmp/staging.tar.gz
+COPY electron-cash.sh /
 
-USER user
-CMD ["/home/user/electron-cash.sh"]
+CMD ["/electron-cash.sh"]

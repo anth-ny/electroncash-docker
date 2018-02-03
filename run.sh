@@ -4,8 +4,8 @@ mkdir -p $HOME/ec-backup
 sudo docker run \
 	--rm \
 	-it \
-	-v $HOME/.electron-cash/:/home/user/.electron-cash/ \
-	-v $HOME/ec-backup/:/home/user/ec-backup/ \
+	-v $HOME/.electron-cash/:/data/.electron-cash/ \
+	-v $HOME/ec-backup/:/data/ec-backup/ \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-e DISPLAY \
 	--init \
