@@ -1,9 +1,9 @@
 https://raw.githubusercontent.com/anth-ny/electroncash-docker/master/run.sh
 
+~~~~
 mkdir -p $HOME/.electron-cash
 mkdir -p $HOME/ec-backup
 
-~~~~
 sudo docker run \
 --rm \
 --volume $HOME/.electron-cash/:/data/.electron-cash/ \
