@@ -1,6 +1,5 @@
 mkdir -p $HOME/.electron-cash
 mkdir -p $HOME/ec-backup
-#	-v $HOME/.Xauthority:/$HOME/.Xauthority \
 if [ "$1" == "test" ]; then
   IMAGE="ec"
   shift
@@ -19,6 +18,7 @@ fi
 if [ "$*" == "root shell" ]; then
   IT="--interactive --tty"
 fi
+#	-v $HOME/.Xauthority:/$HOME/.Xauthority \
 sudo docker run \
 	--rm \
 	$IT \
