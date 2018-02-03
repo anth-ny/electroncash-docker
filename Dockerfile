@@ -2,16 +2,13 @@ FROM ubuntu:16.04 as tarball
 
 RUN apt-get update
 
-COPY jonaldkey2.txt /tmp/
-COPY ElectronCash-3.1.2.tar.gz.sig /tmp/
+COPY jonaldkey2.txt ElectronCash-3.1.2.tar.gz.sig /tmp/
 
 RUN apt-get install -y --no-install-recommends curl ca-certificates
 RUN curl -o /tmp/ElectronCash-3.1.2.tar.gz https://electroncash.org/downloads/3.1.2/win-linux/ElectronCash-3.1.2.tar.gz
 
 RUN gpg --import /tmp/jonaldkey2.txt
 RUN gpg --verify /tmp/ElectronCash-3.1.2.tar.gz.sig /tmp/ElectronCash-3.1.2.tar.gz
-RUN rm /tmp/jonaldkey2.txt
-RUN rm /tmp/ElectronCash-3.1.2.tar.gz.sig
 
 FROM ubuntu:16.04 as binary
 
@@ -29,20 +26,14 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 #RUN ls -l /usr/local/bin
 #/usr/local/share/man/man1/qr.1
 #/usr/share/applications/electron-cash.desktop
+#/usr/share/pixmaps/electron-cash.png
 
 FROM ubuntu:16.04
 
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install python3-pyqt5
 
-COPY --from=binary /usr/share/pixmaps/electron-cash.png /usr/share/pixmaps/electron-cash.png
-COPY --from=binary /usr/local/bin/chardetect /usr/local/bin/chardetect
-COPY --from=binary /usr/local/bin/electron-cash /usr/local/bin/electron-cash
-COPY --from=binary /usr/local/bin/pylupdate5 /usr/local/bin/pylupdate5
-COPY --from=binary /usr/local/bin/pyrcc5 /usr/local/bin/pyrcc5
-COPY --from=binary /usr/local/bin/pyuic5 /usr/local/bin/pyuic5
-COPY --from=binary /usr/local/bin/qr /usr/local/bin/qr
-COPY --from=binary /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
+COPY --from=binary /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/lib/python3.5/dist-packages /usr/local/bin/
 
 RUN groupadd -g 1000 -r user && useradd -u 1000 --create-home --no-log-init -r -g user user
 USER user
