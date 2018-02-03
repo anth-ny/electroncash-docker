@@ -1,3 +1,5 @@
+mkdir -p $HOME/.electron-cash
+mkdir -p $HOME/ec-backup
 #	-v $HOME/.Xauthority:/$HOME/.Xauthority \
 sudo docker run \
 	--rm \
