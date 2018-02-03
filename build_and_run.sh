@@ -10,4 +10,3 @@ sudo docker run \
 	-e DISPLAY \
 	--name ec \
 	ec
-#	ajdjd/electroncash
