@@ -33,6 +33,8 @@ COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/
 COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus gosu
 #RUN tar xvf /tmp/staging.tar.gz -C / && rm /tmp/staging.tar.gz
+RUN mkdir /data && chmod 1777 /data
+VOLUME /data
 COPY entrypoint.sh electron-cash.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]

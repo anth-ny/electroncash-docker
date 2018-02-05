@@ -1,17 +1,10 @@
 #!/bin/bash
 
 dbus-uuidgen >/etc/machine-id
-DIR="/data"
 CMD="curl -o run.sh https://raw.githubusercontent.com/anth-ny/electroncash-docker/master/run.sh && sh run.sh"
 if [ "$*" == "root shell" ]; then
   exec /bin/bash
 fi
-if [ ! -d "$DIR" ]; then
-  echo "$DIR doesn't exist"
-  echo "$CMD"
-  exit
-fi
-chmod 1777 $DIR
 if ! test "$UID" -gt 0 2>/dev/null ; then
   echo "bad UID ($UID)"
   echo 'add -e UID=`id -u $USER` -e GID=`id -g $USER`'
@@ -30,6 +23,5 @@ useradd -u $UID --create-home --no-log-init -r -g user user && \
 gosu user mkdir /tmp/runtime-user
 gosu user chmod 700 /tmp/runtime-user
 export XDG_RUNTIME_DIR=/tmp/runtime-user
-#gosu user mkdir /data/$UID
 
 exec /usr/sbin/gosu user $*
