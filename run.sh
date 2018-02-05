@@ -1,5 +1,3 @@
-mkdir -p $HOME/.electron-cash
-mkdir -p $HOME/ec-backup
 if [ "$1" == "test" ]; then
   IMAGE="ec"
   shift
@@ -9,10 +7,10 @@ fi
 if [ "$*" == "" ]; then
   IT="--detach"
 fi
-if [ "$*" == "sleep" ]; then
+if [ "$*" == "sleep infinity" ]; then
   IT="--detach"
 fi
-if [ "$*" == "shell" ]; then
+if [ "$*" == "/bin/bash" ]; then
   IT="--interactive --tty"
 fi
 if [ "$*" == "root shell" ]; then
@@ -22,8 +20,8 @@ fi
 sudo docker run \
 	--rm \
 	$IT \
-	--volume $HOME/.electron-cash/:/data/.electron-cash/ \
-	--volume $HOME/ec-backup/:/data/ec-backup/ \
+	-e UID=`id -u $USER` -e GID=`id -g $USER` \
+	--mount src=electroncash,dst=/data \
 	--volume /tmp/.X11-unix:/tmp/.X11-unix \
 	--env DISPLAY \
 	--init \

@@ -31,8 +31,8 @@ FROM ubuntu:16.04
 
 COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
 COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
-RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus
-#&& tar xvf /tmp/staging.tar.gz -C / && rm /tmp/staging.tar.gz
+RUN apt-get update && apt-get -y --no-install-recommends install python3-pyqt5 dbus gosu
+#RUN tar xvf /tmp/staging.tar.gz -C / && rm /tmp/staging.tar.gz
 COPY entrypoint.sh electron-cash.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
