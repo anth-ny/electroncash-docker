@@ -8,8 +8,5 @@ if [ ! -d "$DIR" ]; then
   echo "Warning: $DIR doesn't exist; try --volume $DIR:$DIR"
 fi
 
-mkdir -p /data/.electron-cash
-ln -s /data/.electron-cash /home/user/
-
-timeout 3 /usr/local/bin/electron-cash
+#timeout 3 /usr/local/bin/electron-cash
 /usr/local/bin/electron-cash
