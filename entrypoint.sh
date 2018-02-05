@@ -30,6 +30,6 @@ useradd -u $UID --create-home --no-log-init -r -g user user && \
 gosu user mkdir /tmp/runtime-user
 gosu user chmod 700 /tmp/runtime-user
 export XDG_RUNTIME_DIR=/tmp/runtime-user
-gosu user mkdir /data/$UID
+#gosu user mkdir /data/$UID
 
 exec /usr/sbin/gosu user $*
