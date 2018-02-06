@@ -11,4 +11,5 @@ chmod 700 /tmp/runtime-user
 export XDG_RUNTIME_DIR=/tmp/runtime-user
 
 cd /data
+export HOME=/data
 $*
