@@ -21,3 +21,9 @@ Then, run (see https://raw.githubusercontent.com/anth-ny/electroncash-docker/mas
 ~~~~
 x11docker -- "--mount src=electroncash,dst=/data" ajdjd/electroncash
 ~~~~
+
+While Electron Cash is running in Docker, copy a wallet from your .electron-cash folder to Docker (optional):
+
+~~~~
+sudo docker cp ~/.electron-cash/wallets/default_wallet `sudo docker ps | grep x11docker | grep ajdjd_electroncash | awk -F " " '{print $NF}'`:/data/.electron-cash/wallets/
+~~~~
