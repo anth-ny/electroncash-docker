@@ -10,6 +10,12 @@ bash /tmp/x11docker --update
 rm /tmp/x11docker
 ~~~~
 
+Also install xpra (possibly optional, but highly recommended):
+
+~~~~
+sudo dnf install xpra #if using fedora
+~~~~
+
 Then, run (see https://raw.githubusercontent.com/anth-ny/electroncash-docker/master/run.sh):
 
 ~~~~
