@@ -19,5 +19,5 @@ sudo dnf install xpra #if using fedora
 Then, run (see https://raw.githubusercontent.com/anth-ny/electroncash-docker/master/run.sh):
 
 ~~~~
-sudo x11docker -- "--mount src=electroncash,dst=/data" ajdjd/electroncash
+x11docker -- "--mount src=electroncash,dst=/data" ajdjd/electroncash
 ~~~~

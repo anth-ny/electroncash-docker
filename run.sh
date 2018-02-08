@@ -11,4 +11,4 @@ else
   echo "test, prod, or hub?"
   exit
 fi
-sudo x11docker -- "--mount src=electroncash,dst=/data" $IMAGE $*
+x11docker -- "--mount src=electroncash,dst=/data" $IMAGE $*
