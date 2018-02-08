@@ -1,17 +1,14 @@
 if [ "$1" == "test" ]; then
   IMAGE="ec"
   shift
-else
+elif [ "$1" == "prod" ]; then
+  IMAGE="electroncash"
+  shift
+elif [ "$1" == "hub" ]; then
   IMAGE="ajdjd/electroncash"
+  shift
+else
+  echo "test, prod, or hub?"
+  exit
 fi
-#	-v $HOME/.Xauthority:/$HOME/.Xauthority \
-sudo docker run \
-	--rm \
-	$IT \
-	-u `id -u $USER`:`id -g $USER` \
-	--mount src=electroncash,dst=/data \
-	--volume /tmp/.X11-unix:/tmp/.X11-unix \
-	--env DISPLAY \
-	--init \
-	--name ec \
-	$IMAGE $*
+sudo x11docker -- "--mount src=electroncash,dst=/data" $IMAGE $*
