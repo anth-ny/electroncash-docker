@@ -1,9 +1,4 @@
-FROM ubuntu:17.10 as staging
-
-COPY --from=ajdjd/electroncash:shared /tmp/maybe-apt-get-update.sh /tmp/
-RUN /tmp/maybe-apt-get-update.sh
-
-RUN /tmp/maybe-apt-get-update.sh && apt-get -y install python3-pyqt5
+FROM ajdjd/electroncash:base as staging
 
 RUN /tmp/maybe-apt-get-update.sh && apt-get install -y --no-install-recommends curl ca-certificates
 RUN curl -o /tmp/ElectronCash-3.1.2.tar.gz https://electroncash.org/downloads/3.1.2/win-linux/ElectronCash-3.1.2.tar.gz
@@ -24,25 +19,12 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 #/usr/share/applications/electron-cash.desktop
 #/usr/share/pixmaps/electron-cash.png
 
-FROM ubuntu:17.10
+FROM ajdjd/electroncash:base
 
-COPY --from=ajdjd/electroncash:shared /tmp/maybe-apt-get-update.sh /tmp/
-RUN /tmp/maybe-apt-get-update.sh
-
-#RUN /tmp/maybe-apt-get-update.sh && apt-get -y install --no-install-recommends python3-pyqt5
-RUN /tmp/maybe-apt-get-update.sh && apt-get -y install python3-pyqt5
 RUN /tmp/maybe-apt-get-update.sh && apt-get -y install --no-install-recommends dbus
 
 COPY --from=staging /usr/local/lib/python3.6/dist-packages /usr/local/lib/python3.6/dist-packages
 COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
-COPY --from=ajdjd/docker-machine-id-setup /tmp/docker-machine-id-setup /usr/local/bin/
-RUN true \
-  && mkdir /data \
-  && chmod 1777 /data \
-  && chmod 4755 /usr/local/bin/docker-machine-id-setup \
-  && ln -s /data/.electron-cash / \
-;
-COPY --from=ajdjd/electroncash:shared /entrypoint.sh /electron-cash.sh /
 
 VOLUME /data
 ENTRYPOINT ["/entrypoint.sh"]
