@@ -1,15 +1,18 @@
 FROM ubuntu:16.04 as staging
 
-RUN apt-get update && apt-get -y install --no-install-recommends python3-pyqt5
+COPY --from=ajdjd/electroncash:shared /tmp/maybe-apt-get-update.sh /tmp/
+RUN /tmp/maybe-apt-get-update.sh
 
-RUN apt-get install -y --no-install-recommends curl ca-certificates
+RUN /tmp/maybe-apt-get-update.sh && apt-get -y install --no-install-recommends python3-pyqt5
+
+RUN /tmp/maybe-apt-get-update.sh && apt-get install -y --no-install-recommends curl ca-certificates
 RUN curl -o /tmp/ElectronCash-3.1.2.tar.gz https://electroncash.org/downloads/3.1.2/win-linux/ElectronCash-3.1.2.tar.gz
 
 COPY jonaldkey2.txt ElectronCash-3.1.2.tar.gz.sig /tmp/
 RUN gpg --import /tmp/jonaldkey2.txt
 RUN gpg --verify /tmp/ElectronCash-3.1.2.tar.gz.sig /tmp/ElectronCash-3.1.2.tar.gz
 
-RUN apt-get install -y --no-install-recommends python3-pip python3-setuptools
+RUN /tmp/maybe-apt-get-update.sh && apt-get install -y --no-install-recommends python3-pip python3-setuptools
 
 RUN pip3 install --upgrade pip
 RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
@@ -22,8 +25,11 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get -y install --no-install-recommends python3-pyqt5
-RUN apt-get -y install --no-install-recommends dbus
+COPY --from=ajdjd/electroncash:shared /tmp/maybe-apt-get-update.sh /tmp/
+RUN /tmp/maybe-apt-get-update.sh
+
+RUN /tmp/maybe-apt-get-update.sh && apt-get -y install --no-install-recommends python3-pyqt5
+RUN /tmp/maybe-apt-get-update.sh && apt-get -y install --no-install-recommends dbus
 
 COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
