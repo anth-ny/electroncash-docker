@@ -20,17 +20,6 @@ RUN pip3 install /tmp/ElectronCash-3.1.2.tar.gz
 #/usr/share/applications/electron-cash.desktop
 #/usr/share/pixmaps/electron-cash.png
 
-
-FROM alpine as docker-machine-id-setup
-#FROM ubuntu:16.04 as docker-machine-id-setup
-
-RUN apk add --no-cache gcc musl-dev
-#RUN apt-get update && apt-get -y install gcc
-COPY docker-machine-id-setup.c /tmp/
-#RUN cc /tmp/docker-machine-id-setup.c -o /tmp/docker-machine-id-setup
-RUN cc /tmp/docker-machine-id-setup.c --static -o /tmp/docker-machine-id-setup
-
-
 FROM ubuntu:16.04
 
 RUN apt-get update && apt-get -y install --no-install-recommends python3-pyqt5
@@ -38,14 +27,14 @@ RUN apt-get -y install --no-install-recommends dbus
 
 COPY --from=staging /usr/local/lib/python3.5/dist-packages /usr/local/lib/python3.5/dist-packages
 COPY --from=staging /usr/local/bin/chardetect /usr/local/bin/electron-cash /usr/local/bin/pylupdate5 /usr/local/bin/pyrcc5 /usr/local/bin/pyuic5 /usr/local/bin/qr /usr/local/bin/
-COPY --from=docker-machine-id-setup /tmp/docker-machine-id-setup /usr/local/bin/
+COPY --from=ajdjd/docker-machine-id-setup /tmp/docker-machine-id-setup /usr/local/bin/
 RUN true \
   && mkdir /data \
   && chmod 1777 /data \
   && chmod 4755 /usr/local/bin/docker-machine-id-setup \
   && ln -s /data/.electron-cash / \
 ;
-COPY entrypoint.sh electron-cash.sh /
+COPY --from=ajdjd/electroncash:shared /entrypoint.sh /electron-cash.sh /
 
 VOLUME /data
 ENTRYPOINT ["/entrypoint.sh"]
