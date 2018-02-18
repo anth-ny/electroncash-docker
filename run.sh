@@ -1,1 +1,1 @@
-x11docker -- "--mount src=electroncash,dst=/data" electroncash $*
+x11docker --clipboard -- "--mount src=electroncash,dst=/data" electroncash $*
